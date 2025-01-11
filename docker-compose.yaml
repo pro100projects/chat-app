@@ -1,0 +1,26 @@
+version: '3.8'
+name: 'chatapp'
+
+services:
+  database:
+    image: postgres
+    container_name: chatapp-database
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: chatapp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - chatapp-database:/var/lib/postgresql/data
+    networks:
+      - database-network
+    restart: unless-stopped
+
+volumes:
+  chatapp-database:
+    name: database
+
+networks:
+  database-network:
+    name: database-network
