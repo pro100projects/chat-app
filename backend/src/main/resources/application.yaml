@@ -16,3 +16,7 @@ spring:
       ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+security:
+  jwt:
+    secret: ${SECURITY_JWT_SECRET}
