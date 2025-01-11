@@ -15,6 +15,16 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    public UserEntity login(String username, String password) {
+        var userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!passwordEncoder.matches(password, userEntity.getPassword())) {
+            throw new IllegalArgumentException("Wrong password");
+        }
+        return userEntity;
+    }
+
+    @Override
     public UserEntity createUser(UserEntity userEntity) {
         if (userRepository.existsByUsername(userEntity.getUsername())) {
             throw new IllegalArgumentException("This username is already in use");
