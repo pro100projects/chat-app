@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../services/auth.service';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {Router} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,10 @@ export class LoginPage {
   loginForm: FormGroup;
   errorMessage: string | null = null;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
@@ -35,6 +39,7 @@ export class LoginPage {
         localStorage.setItem('authToken', response.authToken);
         localStorage.setItem('refreshToken', response.refreshToken);
         alert('Login successful!');
+        this.router.navigate(['/chat']);
       },
       error: (error) => {
         this.handleError(error);

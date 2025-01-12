@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CommonModule} from '@angular/common';
+import {Router} from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import {AuthService} from '../../services/auth.service';
 
@@ -16,7 +17,10 @@ export class RegisterPage {
   passwordMismatchError: boolean = false;
   errorMessage: string | null = null;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService) {
     this.registerForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       surname: ['', [Validators.required]],
@@ -45,6 +49,7 @@ export class RegisterPage {
         localStorage.setItem('authToken', response.authToken);
         localStorage.setItem('refreshToken', response.refreshToken);
         alert('Registration successful!');
+        this.router.navigate(['/chat']);
       },
       error: (error) => {
         this.handleError(error);
