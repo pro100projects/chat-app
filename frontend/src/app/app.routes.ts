@@ -1,9 +1,11 @@
-import { Routes, RouterModule } from '@angular/router';
-import { RegisterComponent } from './register/register.component';
+import {RouterModule, Routes} from '@angular/router';
+import {RegisterPage} from './pages/register/register.page';
+import {LoginPage} from './pages/login/login.page';
 
 export const routes: Routes = [
-  { path: 'register', component: RegisterComponent }
+  {path: 'register', component: RegisterPage},
+  {path: 'login', component: LoginPage},
+  {path: '', redirectTo: 'login', pathMatch: 'full'}
 ];
 
-// The AppRoutingModule now imports RouterModule directly without the @NgModule decorator
 export const AppRoutingModule = RouterModule.forRoot(routes);
