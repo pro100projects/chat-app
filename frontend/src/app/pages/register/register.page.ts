@@ -30,6 +30,7 @@ export class RegisterPage {
     if (this.registerForm.invalid) {
       return;
     }
+    this.errorMessage = null;
 
     const formData = this.registerForm.value;
     if (formData.password !== formData.repeatPassword) {
