@@ -25,6 +25,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private final SecurityConfig securityConfig;
     private final UserSecurityService userSecurityService;
 
+    private static final String AUTHORIZATION_PARAMETER = "authorization";
+
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         if (request.getRequestURI().startsWith("/api/v1/auth")) {
@@ -51,9 +53,13 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private String getTokenFromRequest(final HttpServletRequest request) {
-        final var header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header != null && header.startsWith("Bearer ")) {
-            return header.substring(7);
+        String bearerToken = request.getParameter(AUTHORIZATION_PARAMETER);
+        if (bearerToken == null) {
+            bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        }
+
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
         }
         return null;
     }
