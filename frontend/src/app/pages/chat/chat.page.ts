@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {WebSocketService} from '../../services/websocket.service';
 import {ChatMessageRequest, ChatMessageResponse} from '../../models/chat-message.model';
+import {ChatService} from '../../services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -15,10 +16,21 @@ export class ChatPage implements OnInit, OnDestroy {
   messages: ChatMessageResponse[] = [];
   newMessage: string = '';
 
-  constructor(private websocketService: WebSocketService) {
+  constructor(
+    private chatService: ChatService,
+    private websocketService: WebSocketService) {
   }
 
   ngOnInit(): void {
+    this.chatService.getMessages().subscribe({
+      next: (response) => {
+        this.messages = response.content;
+      },
+      error: (error) => {
+        console.error('error', error);
+        alert("error during getting chat messages");
+      },
+    });
     this.websocketService.getMessages().subscribe((message: ChatMessageResponse) => {
       this.messages.push(message);
     });
@@ -36,7 +48,7 @@ export class ChatPage implements OnInit, OnDestroy {
     this.newMessage = '';
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() : void {
     this.websocketService.disconnect();
   }
 }
