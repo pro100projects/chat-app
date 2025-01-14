@@ -82,7 +82,7 @@ And you can access frontend by checking `http://localhost` in browser.
 
 ### Accessing the Application
 
-- **Frontend**: Open your browser and navigate to `http://localhost:4200` to access the Angular frontend.
+- **Frontend**: Open your browser and navigate to `http://localhost:4200` locally and `http://localhost` by starting via docker-compose to access the Angular frontend.
 - **Backend**: The Spring Boot backend is available at `http://localhost:8080`.
 
 ### Stopping the Application
