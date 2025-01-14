@@ -10,4 +10,6 @@ public interface ChatService {
     Page<ChatMessageEntity> findAll(Pageable pageable);
 
     ChatMessageEntity saveMessage(UserEntity userEntity, String message);
+
+    void createJoiningToChatMessage(UserEntity userEntity);
 }

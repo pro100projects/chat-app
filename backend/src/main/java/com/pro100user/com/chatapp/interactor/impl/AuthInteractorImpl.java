@@ -7,6 +7,7 @@ import com.pro100user.com.chatapp.model.dto.request.RegisterRequest;
 import com.pro100user.com.chatapp.model.dto.response.TokenResponse;
 import com.pro100user.com.chatapp.security.JwtProvider;
 import com.pro100user.com.chatapp.security.UserPrincipal;
+import com.pro100user.com.chatapp.service.ChatService;
 import com.pro100user.com.chatapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class AuthInteractorImpl implements AuthInteractor {
 
     private final UserMapper userMapper;
     private final UserService userService;
+    private final ChatService chatService;
     private final JwtProvider jwtProvider;
 
     @Override
@@ -33,6 +35,7 @@ public class AuthInteractorImpl implements AuthInteractor {
         }
         var userEntity = userMapper.toUserEntity(request);
         userEntity = userService.createUser(userEntity);
+        chatService.createJoiningToChatMessage(userEntity);
         var userPrincipal = UserPrincipal.generateUserPrincipal(userEntity);
         return jwtProvider.generateTokens(userPrincipal);
     }
