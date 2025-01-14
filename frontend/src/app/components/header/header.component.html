@@ -1,6 +1,10 @@
 <nav>
   <ul>
-    <li><a routerLink="/register" routerLinkActive="active">Register</a></li>
-    <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+    <li *ngIf="!isAuthenticated"><a routerLink="/register" routerLinkActive="active">Register</a></li>
+    <li *ngIf="!isAuthenticated"><a routerLink="/login" routerLinkActive="active">Login</a></li>
+
+    <li *ngIf="isAuthenticated">
+      <a href="#" (click)="logout()">Logout</a>
+    </li>
   </ul>
 </nav>

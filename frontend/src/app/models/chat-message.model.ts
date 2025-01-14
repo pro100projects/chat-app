@@ -8,5 +8,12 @@ export interface ChatMessageResponse {
   id: number;
   user: User;
   message: string;
-  createdAt: string;
+  createdAt: number[];
+}
+
+export interface ChatMessageDto {
+  id: number;
+  user: User;
+  message: string;
+  createdAt: Date;
 }
