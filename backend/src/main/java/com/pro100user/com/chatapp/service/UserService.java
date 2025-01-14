@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface UserService {
 
+    Optional<UserEntity> findById(Long id);
+
     Optional<UserEntity> findByUsername(String email);
 
     UserEntity login(String username, String password);

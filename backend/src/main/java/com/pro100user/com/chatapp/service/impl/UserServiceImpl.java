@@ -17,6 +17,11 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    public Optional<UserEntity> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public Optional<UserEntity> findByUsername(String email) {
         return userRepository.findByUsername(email);
     }
