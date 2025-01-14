@@ -13,7 +13,7 @@ import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
-public class ChatController {
+public class ChatWSController {
 
     private final ChatInteractor chatInteractor;
 

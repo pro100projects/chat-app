@@ -5,6 +5,8 @@ import com.pro100user.com.chatapp.model.entity.UserEntity;
 import com.pro100user.com.chatapp.repository.ChatMessageRepository;
 import com.pro100user.com.chatapp.service.ChatService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChatServiceImpl implements ChatService {
 
     private final ChatMessageRepository chatMessageRepository;
+
+    @Override
+    public Page<ChatMessageEntity> findAll(Pageable pageable) {
+        return chatMessageRepository.findAll(pageable);
+    }
 
     @Override
     @Transactional
