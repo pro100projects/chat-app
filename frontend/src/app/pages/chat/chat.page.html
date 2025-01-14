@@ -9,10 +9,15 @@
         <br> <small>{{ message.createdAt | date: 'HH:mm dd/MM/yyyy' }}</small>
       </p>
     </div>
+    <p>
+      <i *ngIf="getTypingUsernames().length > 0">{{ formatTypingUsers() }}</i>
+      <br *ngIf="getTypingUsernames().length == 0">
+    </p>
     <form (ngSubmit)="sendMessage()">
       <input
         type="text"
         [(ngModel)]="newMessage"
+        (input)="onTyping()"
         placeholder="Type your message"
         name="message"
       />

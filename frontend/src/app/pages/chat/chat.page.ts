@@ -16,6 +16,7 @@ import {UserService} from '../../services/user.service';
 })
 export class ChatPage implements OnInit, OnDestroy {
   currentUser: User | undefined;
+  typingUsers: { [username: string]: any } = {};
   messages: ChatMessageDto[] = [];
   newMessage: string = '';
 
@@ -48,9 +49,17 @@ export class ChatPage implements OnInit, OnDestroy {
         alert("error during getting chat messages");
       },
     });
+
     this.websocketService.getMessages().subscribe((message: ChatMessageResponse) => {
       this.messages.push({...message, createdAt: this.convertToDate(message.createdAt)});
     });
+    this.websocketService.getTypingUsernames().subscribe((username: string) => {
+      this.addOrUpdateTypingUser(username);
+    });
+  }
+
+  onTyping() {
+    this.websocketService.sendTypingEvent();
   }
 
   sendMessage(): void {
@@ -65,8 +74,45 @@ export class ChatPage implements OnInit, OnDestroy {
     this.newMessage = '';
   }
 
+  addOrUpdateTypingUser(username: string) {
+    if (this.currentUser?.username == username) {
+      return;
+    }
+
+    if (this.typingUsers[username]) {
+      clearTimeout(this.typingUsers[username].timer);
+    }
+
+    this.typingUsers[username] = {
+      timer: setTimeout(() => {
+        this.removeTypingUser(username)
+      }, 5000),
+    };
+  }
+
+  removeTypingUser(username: string) {
+    if (this.typingUsers[username]) {
+      clearTimeout(this.typingUsers[username].timer);
+      delete this.typingUsers[username];
+    }
+  }
+
+  getTypingUsernames(): string[] {
+    return Object.keys(this.typingUsers);
+  }
+
   ngOnDestroy(): void {
     this.websocketService.disconnect();
+  }
+
+  formatTypingUsers(): string {
+    const users = this.getTypingUsernames();
+    if (users.length === 1) {
+      return `${users[0]} is typing...`;
+    } else {
+      const lastUser = users.pop();
+      return `${users.join(', ')} and ${lastUser} are typing...`;
+    }
   }
 
   private convertToDate(dateArray: number[]): Date {
