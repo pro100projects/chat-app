@@ -1,51 +1,55 @@
-<div class="register-container">
-  <h2>Register</h2>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="name">Name:</label>
-      <input id="name" formControlName="name" />
-      <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
-        <small *ngIf="registerForm.get('name')?.hasError('required')">Name is required.</small>
+<div class="app-container">
+  <div class="register-container">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name"/>
+        <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          <small *ngIf="registerForm.get('name')?.hasError('required')">Name is required.</small>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <label for="surname">Surname:</label>
-      <input id="surname" formControlName="surname" />
-      <div *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched">
-        <small *ngIf="registerForm.get('surname')?.hasError('required')">Surname is required.</small>
+      <div>
+        <label for="surname">Surname:</label>
+        <input id="surname" formControlName="surname"/>
+        <div *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched">
+          <small *ngIf="registerForm.get('surname')?.hasError('required')">Surname is required.</small>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <label for="username">Username:</label>
-      <input id="username" formControlName="username" />
-      <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
-        <small *ngIf="registerForm.get('username')?.hasError('required')">Username is required.</small>
+      <div>
+        <label for="username">Username:</label>
+        <input id="username" formControlName="username"/>
+        <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+          <small *ngIf="registerForm.get('username')?.hasError('required')">Username is required.</small>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" formControlName="password" />
-      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-        <small *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</small>
-        <small *ngIf="registerForm.get('password')?.hasError('minlength')">Password must be at least 8 characters long.</small>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" formControlName="password"/>
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          <small *ngIf="registerForm.get('password')?.hasError('required')">Password is required.</small>
+          <small *ngIf="registerForm.get('password')?.hasError('minlength')">Password must be at least 8 characters
+            long.</small>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <label for="repeatPassword">Repeat Password:</label>
-      <input type="password" id="repeatPassword" formControlName="repeatPassword" />
-      <div *ngIf="registerForm.get('repeatPassword')?.invalid && registerForm.get('repeatPassword')?.touched">
-        <small *ngIf="registerForm.get('repeatPassword')?.hasError('required')">Repeat Password is required.</small>
-        <small *ngIf="registerForm.get('repeatPassword')?.hasError('minlength')">Repeat Password must be at least 8 characters long.</small>
+      <div>
+        <label for="repeatPassword">Repeat Password:</label>
+        <input type="password" id="repeatPassword" formControlName="repeatPassword"/>
+        <div *ngIf="registerForm.get('repeatPassword')?.invalid && registerForm.get('repeatPassword')?.touched">
+          <small *ngIf="registerForm.get('repeatPassword')?.hasError('required')">Repeat Password is required.</small>
+          <small *ngIf="registerForm.get('repeatPassword')?.hasError('minlength')">Repeat Password must be at least 8
+            characters long.</small>
+        </div>
+        <small *ngIf="passwordMismatchError">Passwords do not match!</small>
       </div>
-      <small *ngIf="passwordMismatchError">Passwords do not match!</small>
-    </div>
 
-    <button type="submit" [disabled]="registerForm.invalid">Register</button>
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
 
-    <small *ngIf="errorMessage">{{ errorMessage }}</small>
-  </form>
+      <small *ngIf="errorMessage">{{ errorMessage }}</small>
+    </form>
+  </div>
 </div>
