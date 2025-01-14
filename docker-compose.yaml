@@ -2,6 +2,34 @@ version: '3.8'
 name: 'chatapp'
 
 services:
+  backend:
+    build:
+      context: backend
+      #dockerfile: Prebuild.Dockerfile
+    container_name: chatapp-backend
+    ports:
+      - '8080:8080'
+    depends_on:
+      - database
+    links:
+      - 'database:database'
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:postgresql://database:5432/chatapp
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    networks:
+      - database-network
+      - frontend-network
+
+  frontend:
+    build: frontend
+    container_name: chatapp-frontend
+    ports:
+      - '80:80'
+    networks:
+      - frontend-network
+
   database:
     image: postgres
     container_name: chatapp-database
@@ -24,3 +52,5 @@ volumes:
 networks:
   database-network:
     name: database-network
+  frontend-network:
+    name: frontend-network
