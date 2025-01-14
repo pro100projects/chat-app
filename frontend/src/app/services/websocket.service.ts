@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Client, IMessage } from '@stomp/stompjs';
+import {Injectable} from '@angular/core';
+import {Client, IMessage} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { Observable, Subject } from 'rxjs';
-import { ChatMessage } from '../models/chat-message.model'
+import {Observable, Subject} from 'rxjs';
+import {ChatMessageRequest, ChatMessageResponse} from '../models/chat-message.model'
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
   private stompClient: Client;
-  private messageSubject: Subject<ChatMessage> = new Subject<ChatMessage>();
+  private messageSubject: Subject<ChatMessageResponse> = new Subject<ChatMessageResponse>();
 
   private readonly messageUrl: string = 'http://localhost:8080/api/v1/chat';
   private readonly topic: string = '/chat/topic/messages';
@@ -27,7 +27,8 @@ export class WebSocketService {
       onConnect: () => {
         console.log('Connected to WebSocket');
         this.stompClient.subscribe(this.topic, (message: IMessage) => {
-          const chatMessage: ChatMessage = JSON.parse(message.body);
+          const chatMessage: ChatMessageResponse = JSON.parse(message.body);
+          console.log('subscribe', message);
           this.messageSubject.next(chatMessage);
         });
       },
@@ -39,7 +40,7 @@ export class WebSocketService {
     this.stompClient.activate();
   }
 
-  sendMessage(message: ChatMessage): void {
+  sendMessage(message: ChatMessageRequest): void {
     if (this.stompClient.connected) {
       this.stompClient.publish({
         destination: this.sendEndpoint,
@@ -50,7 +51,7 @@ export class WebSocketService {
     }
   }
 
-  getMessages(): Observable<ChatMessage> {
+  getMessages(): Observable<ChatMessageResponse> {
     return this.messageSubject.asObservable();
   }
 

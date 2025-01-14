@@ -2,9 +2,9 @@
   <h2>Chat</h2>
   <div class="messages">
     <p *ngFor="let message of messages">
-      <strong>{{ message.sender }}:</strong> {{ message.message }}
+      <strong>{{ message.user.name }} {{ message.user.surname }}:</strong> {{ message.message }}
       <br>
-      <small>{{ message.timestamp }}</small>
+      <small>{{ message.createdAt }}</small>
     </p>
   </div>
   <form (ngSubmit)="sendMessage()">

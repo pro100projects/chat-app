@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { WebSocketService} from '../../services/websocket.service';
-import {ChatMessage} from '../../models/chat-message.model';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {WebSocketService} from '../../services/websocket.service';
+import {ChatMessageRequest, ChatMessageResponse} from '../../models/chat-message.model';
 
 @Component({
   selector: 'app-chat',
@@ -12,15 +12,14 @@ import {ChatMessage} from '../../models/chat-message.model';
   styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit, OnDestroy {
-  messages: ChatMessage[] = [];
+  messages: ChatMessageResponse[] = [];
   newMessage: string = '';
 
   constructor(private websocketService: WebSocketService) {
   }
 
   ngOnInit(): void {
-    this.websocketService.getMessages().subscribe((message: ChatMessage) => {
-      console.log('subscribe')
+    this.websocketService.getMessages().subscribe((message: ChatMessageResponse) => {
       this.messages.push(message);
     });
   }
@@ -30,10 +29,8 @@ export class ChatPage implements OnInit, OnDestroy {
       return;
     }
 
-    const message: ChatMessage = {
-      sender: 'You',
+    const message: ChatMessageRequest = {
       message: this.newMessage,
-      timestamp: new Date().toISOString(),
     };
     this.websocketService.sendMessage(message);
     this.newMessage = '';

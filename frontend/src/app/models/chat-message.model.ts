@@ -1,5 +1,12 @@
-export interface ChatMessage {
-  sender: string;
+import {User} from './user.model';
+
+export interface ChatMessageRequest {
   message: string;
-  timestamp: string;
+}
+
+export interface ChatMessageResponse {
+  id: number;
+  user: User;
+  message: string;
+  createdAt: string;
 }
