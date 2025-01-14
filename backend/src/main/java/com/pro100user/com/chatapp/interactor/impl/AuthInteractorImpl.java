@@ -6,6 +6,7 @@ import com.pro100user.com.chatapp.model.dto.request.LoginRequest;
 import com.pro100user.com.chatapp.model.dto.request.RegisterRequest;
 import com.pro100user.com.chatapp.model.dto.response.TokenResponse;
 import com.pro100user.com.chatapp.security.JwtProvider;
+import com.pro100user.com.chatapp.security.UserPrincipal;
 import com.pro100user.com.chatapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,8 @@ public class AuthInteractorImpl implements AuthInteractor {
     @Override
     public TokenResponse login(LoginRequest request) {
         var userEntity = userService.login(request.username(), request.password());
-        return jwtProvider.generateTokens(userEntity);
+        var userPrincipal = UserPrincipal.generateUserPrincipal(userEntity);
+        return jwtProvider.generateTokens(userPrincipal);
     }
 
     @Override
@@ -29,8 +31,9 @@ public class AuthInteractorImpl implements AuthInteractor {
         if (!request.password().equals(request.repeatPassword())) {
             throw new IllegalArgumentException("Passwords do not match");
         }
-        var userEntity = userMapper.registerRequestToUserEntity(request);
+        var userEntity = userMapper.toUserEntity(request);
         userEntity = userService.createUser(userEntity);
-        return jwtProvider.generateTokens(userEntity);
+        var userPrincipal = UserPrincipal.generateUserPrincipal(userEntity);
+        return jwtProvider.generateTokens(userPrincipal);
     }
 }

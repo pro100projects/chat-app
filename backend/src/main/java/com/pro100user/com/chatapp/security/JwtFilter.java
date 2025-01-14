@@ -52,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
     }
 
-    private String getTokenFromRequest(final HttpServletRequest request) {
+    public String getTokenFromRequest(final HttpServletRequest request) {
         String bearerToken = request.getParameter(AUTHORIZATION_PARAMETER);
         if (bearerToken == null) {
             bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -64,7 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private String getSubjectFromToken(final String token) {
+    public String getSubjectFromToken(final String token) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(securityConfig.jwt().secret().getBytes()).build()

@@ -2,7 +2,6 @@ package com.pro100user.com.chatapp.security;
 
 import com.pro100user.com.chatapp.configuration.config.SecurityConfig;
 import com.pro100user.com.chatapp.model.dto.response.TokenResponse;
-import com.pro100user.com.chatapp.model.entity.UserEntity;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +20,7 @@ public class JwtProvider {
 
     private final SecurityConfig securityConfig;
 
-    public TokenResponse generateTokens(UserEntity userEntity) {
+    public TokenResponse generateTokens(UserPrincipal userPrincipal) {
         Date accessTokenExpirationDate = Date.from(
                 LocalDate.now()
                         .plusDays(15)
@@ -35,13 +34,13 @@ public class JwtProvider {
         );
 
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put("id", userEntity.getId());
-        claims.put("roles", userEntity.getAuthorities());
-        claims.put("enabled", userEntity.isEnabled());
+        claims.put("id", userPrincipal.getId());
+        claims.put("roles", userPrincipal.getAuthorities());
+        claims.put("enabled", userPrincipal.isEnabled());
 
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userEntity.getUsername())
+                .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .signWith(Keys.hmacShaKeyFor(securityConfig.jwt().secret().getBytes()), SignatureAlgorithm.HS512);
 
