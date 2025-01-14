@@ -22,4 +22,10 @@ public class ChatWSController {
     public ChatMessageResponse handleMessage(@Valid ChatMessageRequest request, Principal principal) {
         return chatInteractor.handleMessage(principal.getName(), request);
     }
+
+    @MessageMapping("/typing")
+    @SendTo("/chat/topic/typing")
+    public String handleTyping(Principal principal) {
+        return principal.getName();
+    }
 }
